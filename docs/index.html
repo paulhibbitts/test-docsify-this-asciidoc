@@ -240,9 +240,9 @@
           const cb1 = document.querySelector('#editCheck');
           if (cb1.checked) {
             if (gitlinkPageURL) {
-              if (!lastSegment.includes(".md")) {
+              if (! (lastSegment.includes(".md") || lastSegment.includes(".adoc"))) {
                 // No filename is present, so assume default README.md file
-                gitlinkPageURL = gitlinkPageURL + "README.md";
+                // gitlinkPageURL = gitlinkPageURL + "README.md";
               }
               var URLparms = URLparms + `&edit-link=` + gitlinkPageURL;
             }
@@ -360,7 +360,7 @@
           }
 
           // console.log(lastSegment);
-          if (!lastSegment.includes(".md")) {
+          if (!(lastSegment.includes(".md") || lastSegment.includes(".adoc"))) {
             // No filename is present, so assume default README.md file if full path provided
             if (url.includes("blob")) {
               var baseURL = docsifyURL + `?basePath=${url}` + URLparms;
@@ -652,6 +652,10 @@
 
               var existingEditThisPageLink = '';
               existingEditThisPageLink = getURLParameterByName('edit-link', null, null, window.location.href, true);
+              // console.log(existingEditThisPageLink);
+              var existingEditThisPageLinkString = existingEditThisPageLink.toString();
+              var fileExt = '.' + existingEditThisPageLinkString.split('.').pop();
+              // console.log(fileExt);
 
               for (const link of links) {
                 // console.log(link.getAttribute('href'));
@@ -662,7 +666,7 @@
                   lastSegment = link.getAttribute('href');
                   lastSegment = lastSegment.replace('#/', '');
                   lastSegment = lastSegment.replace('./', '');
-                  lastSegment = lastSegment.replace('.md', '');
+                  lastSegment = lastSegment.replace(fileExt, '');
                   // console.log(lastSegment);
                   // console.log(lastSegment.startsWith("?id"));
                   // Check to make sure link is not Docsify id anchor link
@@ -670,40 +674,45 @@
                   if (lastSegment.startsWith("?id") === false) {
                     if (existingEditThisPageLink) {
                       // Calculate existing edit-link URL parm in link          
-                      if (currentBasePath.includes("githubusercontent.com") && (existingEditThisPageLink.substr(existingEditThisPageLink.length - 3) == '.md')) {
+                      if (currentBasePath.includes("githubusercontent.com") && (existingEditThisPageLink.substr(existingEditThisPageLink.length - 3) == fileExt)) {
                         var editThisPageLink = '';
                         editThisPageLink = decodeURIComponent(currentBasePath);
                         editThisPageLink = editThisPageLink.replace('raw.githubusercontent.com', 'github.com');
                         editThisPageLink = editThisPageLink.replace(/\/main/, '/blob/main');
                         editThisPageLink = editThisPageLink.replace(/\/master/, '/blob/master');
                         //console.log(lastSegment);
-                        editThisPageLink = editThisPageLink + '/' + lastSegment + '.md'
+                        editThisPageLink = editThisPageLink + '/' + lastSegment + fileExt
                         editThisPageLinkURLparm = `&edit-link=` + editThisPageLink;
                         // console.log(editThisPageLinkURLparm);
                       }
-                      if (currentBasePath.includes("codeberg.page") && (existingEditThisPageLink.substr(existingEditThisPageLink.length - 3) == '.md')) {
+                      if (currentBasePath.includes("codeberg.page") && (existingEditThisPageLink.substr(existingEditThisPageLink.length - 3) == fileExt)) {
                         //console.log(currentBasePath);
                         var editThisPageLink = '';
                         editThisPageLink = decodeURIComponent(currentBasePath);
                         editThisPageLink = editThisPageLink.replace('raw.codeberg.page', 'codeberg.org');
                         //console.log(lastSegment);
-                        editThisPageLink = editThisPageLink + '/src/branch/main/' + lastSegment + '.md'
+                        editThisPageLink = editThisPageLink + '/src/branch/main/' + lastSegment + fileExt
                         editThisPageLinkURLparm = `&edit-link=` + editThisPageLink;
                         //console.log(editThisPageLinkURLparm);
                       }
-                      if (!(existingEditThisPageLink.substr(existingEditThisPageLink.length - 3) == '.md')) {
+                      if (!(existingEditThisPageLink.substr(existingEditThisPageLink.length - 3) == fileExt)) {
                         editThisPageLinkURLparm = `&edit-link=` + existingEditThisPageLink;
                       }
                     }
                     // Update Markdown file link
                     var newURL = '';
                     // Leverage Docsify page-to-page cache if no dynamic URL parameters are present (i.e. edit-link Markdown pages)
-                    var isDynamicLink = editThisPageLinkURLparm.substr(-3) === '.md' && !getURLParameterByName('hypothesis');
+                    var isDynamicLink = (editThisPageLinkURLparm.substr(-3) === fileExt || editThisPageLinkURLparm.substr(-5) === '.adoc' ) && !getURLParameterByName('hypothesis');
                     if (!isDynamicLink) {
                       newURL = '#/' + lastSegment;
                       // console.log("Changed:");
                     } else {
-                      newURL = url + '?basePath=' + currentBasePath + '&homepage=' + lastSegment + '.md' + URLparms + editThisPageLinkURLparm;
+                      if (fileExt == '.md') {
+                        newURL = url + '?basePath=' + currentBasePath + '&homepage=' + lastSegment + '.md' + URLparms + editThisPageLinkURLparm;
+                      }
+                      if (fileExt == '.adoc') {
+                        newURL = url + '?basePath=' + currentBasePath + '&homepage=' + lastSegment + '.adoc' + URLparms + editThisPageLinkURLparm;
+                      }
                       // console.log("Changed long:");
                     }
                     // console.log(newURL);
@@ -1137,6 +1146,8 @@
   <!-- <script src="https://cdn.jsdelivr.net/npm/docsify-wikilink@1"></script> -->
   <script src="assets/vendor/docsify/plugins/docsify-wikilink.js"></script>
 
+  <script src="https://unpkg.com/docsify-asciidoc@^1/dist/main.js"></script>
+  
   <!-- Global site tag (gtag.js) - Google Analytics, only loaded for docsify-this.net homepage -->
 
   <script>
