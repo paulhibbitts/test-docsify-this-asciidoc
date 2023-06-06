@@ -719,9 +719,7 @@
                       newURL = '#/' + lastSegment;
                       // console.log("Changed:");
                     } else {
-                      if (fileExt === '.md' || fileExt === '.adoc') {
-                        newURL = url + '?basePath=' + currentBasePath + '&homepage=' + lastSegment + fileExt + URLparms + editThisPageLinkURLparm;
-                      }
+                      newURL = url + '?basePath=' + currentBasePath + '&homepage=' + lastSegment + fileExt + URLparms + editThisPageLinkURLparm;
                       // console.log("Changed long:");
                     }
                     // console.log(newURL);
