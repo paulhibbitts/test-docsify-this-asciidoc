@@ -552,8 +552,18 @@
         } else {
           document.documentElement.style.setProperty('--cover-background-color', '#6c8a9a');
         }
-
       }
+    }
+
+    function getFileExtension(filename) {
+      // Extracts and returns the file extension from the given filename
+      if (filename) {
+        const dotIndex = filename.lastIndexOf('.');
+        if (dotIndex !== -1) {
+          return filename.slice(dotIndex);
+        }
+      }
+      return '';
     }
 
     // console.log (getURLParameterByName(['standalone', 'embedded']));
@@ -575,6 +585,7 @@
       externalLinkTarget: (getURLParameterByName(['standalone', 'embedded'], '_top', '_blank')),
       loadFooter: (getURLParameterByName('footer') || footer || false),
       notFoundPage: '404.md',
+      ext: getFileExtension(getURLParameterByName('homepage', null, null, window.location.href, true)),
 
       // SIDEBAR NAVIGATION
       // -----------------------------------------------------------------
@@ -650,12 +661,12 @@
 
               const links = Array.from(htmlElement.querySelectorAll('a'));
 
-              var existingEditThisPageLink = '';
-              existingEditThisPageLink = getURLParameterByName('edit-link', null, null, window.location.href, true);
-              // console.log(existingEditThisPageLink);
-              var existingEditThisPageLinkString = existingEditThisPageLink.toString();
-              var fileExt = '.' + existingEditThisPageLinkString.split('.').pop();
-              // console.log(fileExt);
+              let existingEditThisPageLink = getURLParameterByName('edit-link', null, null, window.location.href, true);
+              let fileExt = getFileExtension(existingEditThisPageLink);
+              if (!fileExt) {
+                fileExt = getFileExtension(getURLParameterByName('homepage', null, null, window.location.href, true));
+              }
+              console.log(fileExt);
 
               for (const link of links) {
                 // console.log(link.getAttribute('href'));
@@ -674,7 +685,7 @@
                   if (lastSegment.startsWith("?id") === false) {
                     if (existingEditThisPageLink) {
                       // Calculate existing edit-link URL parm in link          
-                      if (currentBasePath.includes("githubusercontent.com") && (existingEditThisPageLink.substr(existingEditThisPageLink.length - 3) == fileExt)) {
+                      if (currentBasePath.includes("githubusercontent.com") && (existingEditThisPageLink.substr(existingEditThisPageLink.length - fileExt.length) == fileExt)) {
                         var editThisPageLink = '';
                         editThisPageLink = decodeURIComponent(currentBasePath);
                         editThisPageLink = editThisPageLink.replace('raw.githubusercontent.com', 'github.com');
@@ -685,7 +696,7 @@
                         editThisPageLinkURLparm = `&edit-link=` + editThisPageLink;
                         // console.log(editThisPageLinkURLparm);
                       }
-                      if (currentBasePath.includes("codeberg.page") && (existingEditThisPageLink.substr(existingEditThisPageLink.length - 3) == fileExt)) {
+                      if (currentBasePath.includes("codeberg.page") && (existingEditThisPageLink.substr(existingEditThisPageLink.length - fileExt.length) == fileExt)) {
                         //console.log(currentBasePath);
                         var editThisPageLink = '';
                         editThisPageLink = decodeURIComponent(currentBasePath);
@@ -695,23 +706,20 @@
                         editThisPageLinkURLparm = `&edit-link=` + editThisPageLink;
                         //console.log(editThisPageLinkURLparm);
                       }
-                      if (!(existingEditThisPageLink.substr(existingEditThisPageLink.length - 3) == fileExt)) {
+                      if (!(existingEditThisPageLink.substr(existingEditThisPageLink.length - fileExt.length) == fileExt)) {
                         editThisPageLinkURLparm = `&edit-link=` + existingEditThisPageLink;
                       }
                     }
                     // Update Markdown file link
                     var newURL = '';
                     // Leverage Docsify page-to-page cache if no dynamic URL parameters are present (i.e. edit-link Markdown pages)
-                    var isDynamicLink = (editThisPageLinkURLparm.substr(-3) === fileExt || editThisPageLinkURLparm.substr(-5) === '.adoc' ) && !getURLParameterByName('hypothesis');
+                    var isDynamicLink = (editThisPageLinkURLparm.substr(-3) === '.md' || editThisPageLinkURLparm.substr(-5) === '.adoc' ) && !getURLParameterByName('hypothesis');
                     if (!isDynamicLink) {
                       newURL = '#/' + lastSegment;
                       // console.log("Changed:");
                     } else {
-                      if (fileExt == '.md') {
-                        newURL = url + '?basePath=' + currentBasePath + '&homepage=' + lastSegment + '.md' + URLparms + editThisPageLinkURLparm;
-                      }
-                      if (fileExt == '.adoc') {
-                        newURL = url + '?basePath=' + currentBasePath + '&homepage=' + lastSegment + '.adoc' + URLparms + editThisPageLinkURLparm;
+                      if (fileExt === '.md' || fileExt === '.adoc') {
+                        newURL = url + '?basePath=' + currentBasePath + '&homepage=' + lastSegment + fileExt + URLparms + editThisPageLinkURLparm;
                       }
                       // console.log("Changed long:");
                     }
