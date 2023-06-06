@@ -240,9 +240,9 @@
           const cb1 = document.querySelector('#editCheck');
           if (cb1.checked) {
             if (gitlinkPageURL) {
-              if (! (lastSegment.includes(".md") || lastSegment.includes(".adoc"))) {
+              if (!lastSegment.includes(".md")) {
                 // No filename is present, so assume default README.md file
-                // gitlinkPageURL = gitlinkPageURL + "README.md";
+                gitlinkPageURL = gitlinkPageURL + "README.md";
               }
               var URLparms = URLparms + `&edit-link=` + gitlinkPageURL;
             }
