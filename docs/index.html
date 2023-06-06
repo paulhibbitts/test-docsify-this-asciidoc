@@ -240,7 +240,7 @@
           const cb1 = document.querySelector('#editCheck');
           if (cb1.checked) {
             if (gitlinkPageURL) {
-              if (!lastSegment.includes(".md")) {
+              if (! (lastSegment.includes(".md") || lastSegment.includes(".adoc"))) {
                 // No filename is present, so assume default README.md file
                 gitlinkPageURL = gitlinkPageURL + "README.md";
               }
@@ -552,6 +552,7 @@
         } else {
           document.documentElement.style.setProperty('--cover-background-color', '#6c8a9a');
         }
+
       }
     }
 
