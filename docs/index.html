@@ -685,7 +685,7 @@
                   var editThisPageLinkURLparm = '';
                   if (lastSegment.startsWith("?id") === false) {
                     if (existingEditThisPageLink) {
-                      // Calculate existing edit-link URL parm in link          
+                      // Calculate existing edit-link URL parm in link
                       if (currentBasePath.includes("githubusercontent.com") && (existingEditThisPageLink.substr(existingEditThisPageLink.length - fileExt.length) == fileExt)) {
                         var editThisPageLink = '';
                         editThisPageLink = decodeURIComponent(currentBasePath);
