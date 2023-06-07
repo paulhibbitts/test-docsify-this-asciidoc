@@ -10,7 +10,7 @@
 
 <h1>Instantly Turn Online Markdown Files into Web Pages</h1>
 
-This open-source web app, built with the magical documentation site generator [Docsify](https://docsify.js.org), provides a quick way to publish one or more online Markdown files as standalone web pages without needing to set up your own website. Try it out below!
+This open-source web app, built with the magical documentation site generator [Docsify](https://docsify.js.org), provides a quick way to publish one or more online Markdown and AsciiDoc files as standalone web pages without needing to set up your own website. Try it out below!
 
 <div id="docsifythisurlbuilder">
 
@@ -18,7 +18,7 @@ This open-source web app, built with the magical documentation site generator [D
 
 Enter the URL of a Markdown file and view that file as a web page in a new Browser tab. The resulting Docsify-This page URL can be copied and shared or used as an iFrame source URL.
 
-**Markdown File URL** (GitHub, Codeberg or raw source URL):</br>
+**Markdown File URL** (GitHub, Codeberg or raw source URL. AsciiDoc files also supported):</br>
 <input name="markdownFileURL" aria-label="markdown file url" id="docsifythisurlfield" type="url" onfocus="this.select()" onclick="this.select()" onkeypress="checkKey(event);" size="200px" value="https://github.com/asciidoctor/asciidoctor-pdf/blob/main/examples/basic-example.adoc" />
 <input class="docsifythisurlbuilderprimarybutton" style="border:none;" type="button" id="btn_1" value="Publish as a Standalone Web Page" onclick="openURLs(document.getElementById('docsifythisurlfield').value)"/></br>
 
