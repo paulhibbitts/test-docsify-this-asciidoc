@@ -365,7 +365,7 @@
             if (url.includes("blob")) {
               var baseURL = docsifyURL + `?basePath=${url}` + URLparms;
             } else {
-              alert("Please include the full path and filename with a supported extension (" + getAllowedFileExtensions() + ") in the Markdown file URL (e.g. 'https://github.com/hibbitts-design/docsify-this-one-page-article/blob/main/home.md').");
+              alert("Please include the full path and filename with a supported extension (" + getAllowedFileExtensions() + ") in the Markdown file URL, for example 'https://github.com/hibbitts-design/docsify-this-one-page-article/blob/main/home.md'.");
               selectText();
               return;
             }
@@ -1099,14 +1099,6 @@
   <!-- Check for coverpage-color, coverpage-link-color, headerweight, fontfamily, fontsize, lineheight, linkcolor, darkmode and title parameters -->
   <script>
     if (!(window.$docsify['basePath'] === undefined)) {
-
-      // Change coverpage color if coverpagecolor parameter present
-      coverpagecolor = getURLParameterByName('coverpage-color', null, null, window.location.href, true);
-      if (!(coverpagecolor === false)) {
-        coverpagecolor = '#' + coverpagecolor;
-        // console.log(coverpagecolor);
-        document.documentElement.style.setProperty('--cover-background-color', coverpagecolor);
-      }
 
       // Change header weight if headerweight parameter present
       headerweight = getURLParameterByName('header-weight', null, null, window.location.href, true);
