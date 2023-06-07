@@ -365,7 +365,7 @@
             if (url.includes("blob")) {
               var baseURL = docsifyURL + `?basePath=${url}` + URLparms;
             } else {
-              alert("Please include the full path and filename with a supported extension (" + getAllowedFileExtensions() + ") in the Markdown file URL, for example 'https://github.com/hibbitts-design/docsify-this-one-page-article/blob/main/home.md'.");
+              alert("Please include the full path and filename with a supported extension (" + getAllowedFileExtensions() + ") in the file URL, for example 'https://github.com/hibbitts-design/docsify-this-one-page-article/blob/main/home.md'.");
               selectText();
               return;
             }
