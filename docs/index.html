@@ -728,7 +728,7 @@
                     // Update Markdown file link
                     var newURL = '';
                     // Leverage Docsify page-to-page cache if no dynamic URL parameters are present (i.e. edit-link Markdown pages)
-                    var isDynamicLink = isExtensionAllowed(editThisPageLinkURLparm) & !getURLParameterByName('hypothesis');
+                    var isDynamicLink = (isExtensionAllowed(editThisPageLinkURLparm) && !(editThisPageLinkURLparm === "")) && !getURLParameterByName('hypothesis');
                     if (!isDynamicLink) {
                       newURL = '#/' + lastSegment;
                       // console.log("Changed:");
